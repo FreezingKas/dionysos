@@ -14,7 +14,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=web"
       - "traefik.http.routers.dionysos.entrypoints=web,websecure"
-      - "traefik.http.routers.dionysos.rule=Host(`dionysos.freezingkas.com`)"
+      - "traefik.http.routers.dionysos.rule=Host(`wine.freezingkas.com`)"
       - "traefik.http.services.dionysos.loadbalancer.server.port=8000"
       - "traefik.http.routers.dionysos.tls=true"
       - "traefik.http.routers.dionysos.tls.certresolver=lets-encrypt"

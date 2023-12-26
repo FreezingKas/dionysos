@@ -7,7 +7,7 @@ services:
     restart: always
     container_name: dionysos
     volumes:
-      - ./static:./static
+      - ./static:/app/static
     networks:
       - web
     labels:

@@ -1,0 +1,24 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  bitwarden:
+    build: .
+    restart: always
+    container_name: dionysos
+    volumes:
+      - ./data:./static
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.dionysos.entrypoints=web,websecure"
+      - "traefik.http.routers.dionysos.rule=Host(`dionysos.freezingkas.com`)"
+      - "traefik.http.services.dionysos.loadbalancer.server.port=8000"
+      - "traefik.http.routers.dionysos.tls=true"
+      - "traefik.http.routers.dionysos.tls.certresolver=lets-encrypt"
+
+networks:
+  web:
+    external: true

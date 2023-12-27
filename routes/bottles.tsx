@@ -1,7 +1,7 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import Card from "../islands/Card.tsx";
 import Header from "../components/Header.tsx";
-import BottlesModel from "../utils/db.ts";
+import {BottlesModel, orm} from "../utils/db.ts";
 
 export default function Bottles({ data }: PageProps) {
   return (
@@ -29,7 +29,7 @@ export default function Bottles({ data }: PageProps) {
 
 export const handler: Handlers = {
   async GET(_req, ctx) {
-    const bottles = await BottlesModel.all();
+    const bottles = orm.findMany(BottlesModel, {})
     return ctx.render(bottles);
   },
 };

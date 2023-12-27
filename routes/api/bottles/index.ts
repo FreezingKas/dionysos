@@ -1,22 +1,14 @@
 import { Handlers } from "$fresh/server.ts";
-import BottlesModel from "../../../utils/db.ts";
+import {BottlesModel, orm} from "../../../utils/db.ts";
 import { download } from "https://deno.land/x/download@v2.0.2/mod.ts";
 
 export const handler: Handlers = {
-  async GET(req, ctx) {
-    const bottles = await BottlesModel.select(
-      "id",
-      "name",
-      "year",
-      "description",
-      "image_link",
-      "stock",
-      "updated_at"
-    ).all();
+  async GET(_req, _ctx) {
+    const bottles = await orm.findMany(BottlesModel, {});
     return new Response(JSON.stringify(bottles), { status: 200 });
   },
 
-  async POST(req, ctx) {
+  async POST(req, _ctx) {
     const params = await req.json();
     if (!params) {
       return new Response("Missing parameters", { status: 400 });
@@ -33,13 +25,14 @@ export const handler: Handlers = {
       return new Response("Error downloading image", { status: 500 });
     }
 
-    const bottle = await BottlesModel.create([{
-      name: params.name,
-      description: params.description,
-      stock: params.stock,
-      image_link: fileName,
-      year: params.year,
-    }]);
+    const bottle = new BottlesModel();
+    bottle.name = params.name;
+    bottle.description = params.description;
+    bottle.stock = params.stock;
+    bottle.image_link = fileName;
+    bottle.year = params.year;
+
+    orm.save(bottle);
 
     console.log("[INFO] Bottle created: " + params.name);
 

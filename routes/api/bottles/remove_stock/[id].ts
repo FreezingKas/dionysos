@@ -1,29 +1,31 @@
 import { Handlers } from "$fresh/server.ts";
-import BottlesModel from "../../../../utils/db.ts";
+import { BottlesModel, orm } from "../../../../utils/db.ts";
 
 export const handler: Handlers = {
-    async POST(req, ctx) {
-        // get id
-        const { id } = ctx.params;
-        
-        // get stock
-        const bottle = await BottlesModel.where("id", id).first();
+  async POST(_req, ctx) {
+    // get id
+    const { id } = ctx.params;
 
-        if (!bottle?.stock) {
-            return new Response("Bottle not found", { status: 404 });
-        }
+    // get stock
+    const bottle = await orm.findMany(BottlesModel, {
+      limit: 1,
+      where: { clause: "id = ?", values: [id] },
+    });
 
-        if (bottle.stock === 0) {
-            return new Response("Bottle out of stock", { status: 400 });
-        }
-        const resp = BottlesModel.where("id", id).update({
-            stock: Number(bottle.stock) - 1
-        });
-
-        if (!resp) {
-            return new Response("Error updating stock", { status: 500 });
-        }
-
-        return new Response("OK", { status: 200 });
+    if (!bottle[0]) {
+      return new Response("Bottle not found", { status: 404 });
     }
+
+    if (bottle[0].stock === 0) {
+      return new Response("Bottle out of stock", { status: 400 });
+    }
+    bottle[0].stock -= 1;
+    orm.save(bottle[0]);
+
+    // if (!resp) {
+    //     return new Response("Error updating stock", { status: 500 });
+    // }
+
+    return new Response("OK", { status: 200 });
+  },
 };

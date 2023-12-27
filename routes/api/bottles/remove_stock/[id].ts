@@ -22,10 +22,6 @@ export const handler: Handlers = {
     bottle[0].stock -= 1;
     orm.save(bottle[0]);
 
-    // if (!resp) {
-    //     return new Response("Error updating stock", { status: 500 });
-    // }
-
     return new Response("OK", { status: 200 });
   },
 };

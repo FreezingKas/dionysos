@@ -11,7 +11,7 @@ export default function Bottles({ data }: PageProps) {
     >
       <Header active="/bottles" />
       <div className="max-w-screen-xl mx-auto flex flex-wrap gap-8 my-12 items-center justify-center">
-        {data.map((bottle: any) => (
+        {data.map((bottle: BottlesModel) => (
           <Card
             key={bottle.id}
             id={bottle.id}
@@ -28,7 +28,7 @@ export default function Bottles({ data }: PageProps) {
 }
 
 export const handler: Handlers = {
-  async GET(_req, ctx) {
+  GET(_req, ctx) {
     const bottles = orm.findMany(BottlesModel, {})
     return ctx.render(bottles);
   },

@@ -15,7 +15,7 @@ export default function Card(
   const stock_signal = useSignal(stock);
   async function addBottle() {
     const resp = await fetch(
-      "http://localhost:8000/api/bottles/add_stock/" + id,
+      "/api/bottles/add_stock/" + id,
       {
         method: "POST",
       },
@@ -28,7 +28,7 @@ export default function Card(
 
   async function removeBottle() {
     const resp = await fetch(
-      "http://localhost:8000/api/bottles/remove_stock/" + id,
+      "/api/bottles/remove_stock/" + id,
       {
         method: "POST",
       },

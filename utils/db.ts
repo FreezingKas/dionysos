@@ -9,4 +9,4 @@ export class BottlesModel extends SSQLTable {
 
 }
 
-export const orm = new SSQL("database.sqlite", [BottlesModel]);
+export const orm = new SSQL("utils/database.sqlite", [BottlesModel]);

@@ -145,10 +145,10 @@ export default function FormAddBottle() {
         >
           Add Bottle
         </button>
-        <div className="text-xl ml-1 my-2 text-gray-100 text-center">
+      </div>
+      <div className="text-xl ml-1 my-2 text-gray-100 text-center">
           {resp_text.value}
         </div>
-      </div>
     </div>
   );
 }

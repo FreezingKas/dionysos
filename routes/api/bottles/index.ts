@@ -1,5 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
-import {BottlesModel, orm} from "../../../utils/db.ts";
+import { re } from "$std/semver/_shared.ts";
+import { BottlesModel, orm } from "../../../utils/db.ts";
 import { download } from "https://deno.land/x/download@v2.0.2/mod.ts";
 
 export const handler: Handlers = {
@@ -13,14 +14,26 @@ export const handler: Handlers = {
     if (!params) {
       return new Response("Missing parameters", { status: 400 });
     }
-    
+
     // generate sha256 random name
-    const hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(params.image_link));
+    const hash = await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(params.image_link),
+    );
 
     // generate file name with hash and the extension in image_link
-    const fileName = Array.from(new Uint8Array(hash)).map((b) => b.toString(16).padStart(2, "0")).join("") + "." + params.image_link.split(".").pop();
+    const fileName =
+      Array.from(new Uint8Array(hash)).map((b) =>
+        b.toString(16).padStart(2, "0")
+      ).join("") + "." + params.image_link.split(".").pop();
 
-    const image = await download(params.image_link, {dir: "./static/bottles", file: fileName});
+    const image = await download(params.image_link, {
+      dir: "./static/bottles",
+      file: fileName,
+    }).catch((err) => {
+      console.log(err);
+      return new Response("Error downloading image", { status: 500 });
+    });
     if (!image) {
       return new Response("Error downloading image", { status: 500 });
     }

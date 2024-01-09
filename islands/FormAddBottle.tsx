@@ -31,6 +31,8 @@ export default function FormAddBottle() {
       image_link.value = "";
       stock.value = 0;
       resp_text.value = "Bottle added successfully";
+    } else {
+      resp_text.value = "Error while adding the bottle";
     }
   };
 

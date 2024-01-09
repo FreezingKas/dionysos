@@ -12,6 +12,7 @@ export default function App({ Component }: PageProps) {
           name="description"
           content="Wine Cellar Manager by FreezingKas. Add and remove bottles in your cellar with a click."
         />
+        <link rel="icon" href="/favicon.ico" />
 
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://wine.freezingkas.com" />
